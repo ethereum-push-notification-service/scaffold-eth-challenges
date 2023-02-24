@@ -4,6 +4,7 @@ import { useThemeSwitcher } from "react-css-theme-switcher";
 import Address from "./Address";
 import Balance from "./Balance";
 import Wallet from "./Wallet";
+import { usePushSubscribe } from "./Push/usePushSubscribe";
 
 /*
   ~ What it does? ~
@@ -38,7 +39,6 @@ import Wallet from "./Wallet";
   - Provide blockExplorer={blockExplorer}, click on address and get the link
               (ex. by default "https://etherscan.io/" or for xdai "https://blockscout.com/poa/xdai/")
 */
-
 export default function Account({
   address,
   userSigner,
@@ -80,7 +80,6 @@ export default function Account({
       );
     }
   }
-
   const { currentTheme } = useThemeSwitcher();
 
   const display = minimized ? (
@@ -103,10 +102,21 @@ export default function Account({
       />
     </span>
   );
-
+  const { toggleUserStatus, loading, isSubscribed } = usePushSubscribe();
   return (
     <div>
       {display}
+      <Button
+        key="optinbutton"
+        style={{ verticalAlign: "top", marginLeft: 8, marginTop: 4, marginBottom: 8 }}
+        shape="round"
+        size="large"
+        type={minimized ? "default" : "primary"}
+        onClick={toggleUserStatus}
+      >
+        Opt-in 🔔
+        {isSubscribed ? "Unsubscribe" : "Subscribe"}
+      </Button>
       {modalButtons}
     </div>
   );
